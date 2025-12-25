@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="pt-AO">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LoginMaster - Venda de Páginas de Login</title>
+    <style>
+        :root {
+            --primary: #00d4ff;
+            --secondary: #7000ff;
+            --bg-dark: #0f172a;
+            --bg-card: #1e293b;
+            --text-light: #f8fafc;
+            --text-gray: #94a3b8;
+            --success: #22c55e;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Segoe UI', sans-serif; }
+        
+        body { background-color: var(--bg-dark); color: var(--text-light); line-height: 1.6; }
+
+        
+        header {
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 1.5rem 5%; background: rgba(15, 23, 42, 0.95);
+            position: fixed; width: 100%; top: 0; z-index: 1000;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
+        }
+        .logo { font-size: 1.5rem; font-weight: bold; color: var(--primary); }
+        nav a { color: var(--text-light); text-decoration: none; margin-left: 20px; transition: 0.3s; }
+        nav a:hover { color: var(--primary); }
+
+        
+        .hero {
+            height: 100vh; display: flex; flex-direction: column;
+            justify-content: center; align-items: center; text-align: center;
+            background: radial-gradient(circle at center, #1e293b 0%, #0f172a 100%);
+            padding: 0 20px; margin-top: 60px;
+        }
+        .hero h1 { font-size: 3rem; margin-bottom: 20px; background: linear-gradient(to right, var(--primary), var(--secondary)); -webkit-background-clip: text; color: transparent; }
+        .hero p { font-size: 1.2rem; color: var(--text-gray); max-width: 600px; margin-bottom: 30px; }
+        .btn-cta {
+            background: var(--primary); color: #000; padding: 12px 30px;
+            border-radius: 50px; text-decoration: none; font-weight: bold;
+            transition: transform 0.2s; cursor: pointer; border: none;
+        }
+        .btn-cta:hover { transform: scale(1.05); box-shadow: 0 0 15px var(--primary); }
+
+        
+        .section-title { text-align: center; margin: 80px 0 40px; font-size: 2rem; }
+        .grid-container {
+            display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px; padding: 0 5%; max-width: 1200px; margin: 0 auto;
+        }
+        .card {
+            background: var(--bg-card); padding: 30px; border-radius: 15px;
+            border: 1px solid rgba(255,255,255,0.05); transition: 0.3s;
+            position: relative; overflow: hidden; display: flex; flex-direction: column;
+        }
+        .card:hover { transform: translateY(-10px); border-color: var(--primary); }
+        .card h3 { font-size: 1.5rem; margin-bottom: 15px; }
+        .price { font-size: 2rem; font-weight: bold; color: var(--primary); margin-bottom: 20px; }
+        .features { list-style: none; margin-bottom: 25px; color: var(--text-gray); flex-grow: 1; }
+        .features li { margin-bottom: 10px; display: flex; align-items: center; }
+        .features li::before { content: "✔"; color: var(--success); margin-right: 10px; }
+
+        .btn-buy {
+            width: 100%; padding: 12px; background: transparent; border: 2px solid var(--primary);
+            color: var(--primary); border-radius: 8px; cursor: pointer; font-weight: bold; transition: 0.3s;
+        }
+        .btn-buy:hover { background: var(--primary); color: #000; }
+
+        
+        .modal-overlay {
+            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.8); z-index: 2000; align-items: center; justify-content: center;
+            backdrop-filter: blur(5px);
+        }
+        .modal-content {
+            background: var(--bg-card); padding: 40px; border-radius: 15px;
+            width: 90%; max-width: 500px; position: relative;
+            border: 1px solid var(--primary);
+            animation: slideDown 0.3s ease;
+        }
+        @keyframes slideDown { from {opacity: 0; transform: translateY(-50px);} to {opacity: 1; transform: translateY(0);} }
+        
+        .close-modal {
+            position: absolute; top: 15px; right: 20px; font-size: 1.5rem;
+            cursor: pointer; color: var(--text-gray);
+        }
+        .close-modal:hover { color: #fff; }
+
+        
+        form { display: flex; flex-direction: column; gap: 15px; }
+        label { font-size: 0.9rem; color: var(--text-gray); }
+        input, select, textarea {
+            padding: 12px; background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 8px; color: #fff; outline: none;
+        }
+        input:focus, select:focus, textarea:focus { border-color: var(--primary); }
+        .submit-btn {
+            background: linear-gradient(45deg, var(--secondary), var(--primary));
+            border: none; color: white; padding: 15px; border-radius: 8px;
+            font-weight: bold; cursor: pointer; margin-top: 10px;
+        }
+
+
+        footer { text-align: center; padding: 40px; margin-top: 80px; border-top: 1px solid rgba(255,255,255,0.1); color: var(--text-gray); }
+
+        @media (max-width: 768px) {
+            .hero h1 { font-size: 2rem; }
+            header { flex-direction: column; gap: 10px; }
+            nav { margin-top: 10px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="logo">Login<span style="color:#fff">Master</span></div>
+        <nav>
+            <a href="#inicio">Início</a>
+            <a href="#modelos">Modelos</a>
+            <a href="#contato">Contacto</a>
+        </nav>
+    </header>
+
+    <section class="hero" id="inicio">
+        <h1>Páginas de Login Profissionais</h1>
+        <p>Interfaces de autenticação seguras, modernas e responsivas para o seu sistema ou site. Código pronto para usar.</p>
+        <button class="btn-cta" onclick="scrollToServices()">Ver Modelos</button>
+    </section>
+
+    <h2 class="section-title" id="modelos">Escolha seu Estilo</h2>
+    <section class="grid-container">
+        
+        <div class="card">
+            <h3>Login Minimalista</h3>
+            <div class="price">10.000 Kz</div>
+            <ul class="features">
+                <li>Design Limpo e Leve</li>
+                <li>HTML5 e CSS3 Puro</li>
+                <li>Carregamento Ultra Rápido</li>
+                <li>Botão "Esqueci a Senha"</li>
+                <li>Responsivo (Mobile)</li>
+            </ul>
+            <button class="btn-buy" onclick="openModal('Login Minimalista - 10.000 Kz')">Comprar Código</button>
+        </div>
+
+        <div class="card" style="border-color: rgba(255,255,255,0.1)">
+            <h3>Login Moderno (Glass)</h3>
+            <div class="price">20.000 Kz</div>
+            <ul class="features">
+                <li>Efeito Glassmorphism (Vidro)</li>
+                <li>Fundo com Imagem/Vídeo</li>
+                <li>Ícone "Ver Senha" (JS)</li>
+                <li>Animações Suaves</li>
+                <li>Validação de E-mail</li>
+            </ul>
+            <button class="btn-buy" onclick="openModal('Login Glassmorphism - 20.000 Kz')">Comprar Código</button>
+        </div>
+
+        <div class="card" style="border-color: var(--secondary)">
+            <h3>Kit Autenticação</h3>
+            <div class="price">35.000 Kz</div>
+            <ul class="features">
+                <li>Tela de Login + Tela de Registo</li>
+                <li>Tela de Recuperar Senha</li>
+                <li>Integração Social (Google/FB)</li>
+                <li>Layout para Dashboard</li>
+                <li>Suporte na Implementação</li>
+            </ul>
+            <button class="btn-buy" onclick="openModal('Kit Autenticação Completo - 35.000 Kz')">Pedir Kit</button>
+        </div>
+
+    </section>
+
+    <footer>
+        <p>&copy; 2024 LoginMaster. Todos os direitos reservados.</p>
+        <p>Entregamos o código fonte (HTML/CSS/JS) via WhatsApp ou E-mail após pagamento.</p>
+    </footer>
+
+    <div class="modal-overlay" id="orderModal">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2 style="margin-bottom: 20px;">Comprar Login</h2>
+            <p style="color:var(--text-gray); margin-bottom: 20px;">Deixe seu contacto para recebermos o pedido.</p>
+            
+            <form id="orderForm" onsubmit="submitOrder(event)">
+                <label for="name">Seu Nome</label>
+                <input type="text" id="name" placeholder="Ex: João Baptista" required>
+
+                <label for="service">Modelo Escolhido</label>
+                <input type="text" id="service" readonly style="background: rgba(255,255,255,0.05);">
+
+                <label for="contact">WhatsApp</label>
+                <input type="tel" id="contact" placeholder="+244 9XX XXX XXX" required>
+
+                <label for="obs">Preferências (Cores, Logo, etc)</label>
+                <textarea id="obs" rows="3" placeholder="Ex: Quero com fundo azul escuro..."></textarea>
+
+                <button type="submit" class="submit-btn">Finalizar no WhatsApp</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        const modal = document.getElementById('orderModal');
+        const serviceInput = document.getElementById('service');
+
+        // Rolagem suave
+        function scrollToServices() {
+            document.getElementById('modelos').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Abrir Modal
+        function openModal(serviceName) {
+            serviceInput.value = serviceName;
+            modal.style.display = 'flex';
+        }
+
+        // Fechar Modal
+        function closeModal() {
+            modal.style.display = 'none';
+        }
+
+        // Fechar ao clicar fora
+        window.onclick = function(event) {
+            if (event.target == modal) {
+                closeModal();
+            }
+        }
+
+        // Simulação de Envio (Integração WhatsApp)
+        function submitOrder(event) {
+            event.preventDefault();
+            
+            const name = document.getElementById('name').value;
+            const service = document.getElementById('service').value;
+            const contact = document.getElementById('contact').value;
+            const obs = document.getElementById('obs').value;
+
+            const myNumber = "244936525299"; 
+            
+            const message = `*Novo Pedido de Login!*%0A%0A *Cliente:* ${name}%0A *Modelo:* ${service}%0A *Contacto:* ${contact}%0A *Obs:* ${obs}`;
+            
+            const whatsappUrl = `https://wa.me/${myNumber}?text=${message}`;
+
+            window.open(whatsappUrl, '_blank');
+            closeModal();
+        }
+    </script>
+</body>
+</html>
